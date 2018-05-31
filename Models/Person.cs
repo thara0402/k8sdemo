@@ -1,5 +1,5 @@
 using System;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace k8sdemo.Controllers
 {
@@ -20,6 +20,7 @@ namespace k8sdemo.Controllers
         /// Person Code
         /// </summary>
         /// <returns></returns>
+        [Required]
         public string Code { get; set; }
 
         /// <summary>
