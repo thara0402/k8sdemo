@@ -13,7 +13,8 @@ namespace k8sdemo.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [Produces("application/json")]
-    public class PersonController : Controller
+    [ApiController]
+    public class PersonController : ControllerBase
     {
         private IEnumerable<Person> _repository;
 
@@ -54,7 +55,7 @@ namespace k8sdemo.Controllers
         /// <returns>The person with the specified id.</returns>
         /// <response code="200">The person specified by the id.</response>
         /// <response code="404">If the person is not found.</response>
-        [HttpGet("{id}", Name = "GetPersonById")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(Person), 200)]
         [ProducesResponseType(404)]
         public IActionResult GetById(string id)
@@ -79,11 +80,7 @@ namespace k8sdemo.Controllers
         [ProducesResponseType(400)]
         public IActionResult Create([FromBody]Person person)
         {
-            if (person == null)
-            {
-                return BadRequest();
-            }
-            return CreatedAtRoute("GetPersonById", new { id = person.Id }, person);
+            return CreatedAtAction(nameof(GetById), new { id = person.Id }, person);
         }
 
         /// <summary>
@@ -101,9 +98,10 @@ namespace k8sdemo.Controllers
         [ProducesResponseType(404)]
         public IActionResult Update(string id, [FromBody]Person person)
         {
-            if (person == null || person.Id != id)
+            var model = _repository.Where(x => x.Id == id).FirstOrDefault();
+            if (model == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             return new NoContentResult();
         }
@@ -113,7 +111,7 @@ namespace k8sdemo.Controllers
         /// </summary>
         /// <param name="id">The id of the person.</param>
         /// <returns>No content.</returns>
-        /// <response code="202">No content if the person is successfully deleted.</response>
+        /// <response code="204">No content if the person is successfully deleted.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         public IActionResult Delete(string id)
