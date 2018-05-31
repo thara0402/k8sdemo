@@ -8,24 +8,13 @@ using k8sdemo.Models;
 
 namespace k8sdemo.Controllers
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class HomeController : Controller
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -33,10 +22,6 @@ namespace k8sdemo.Controllers
             return View();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
@@ -44,10 +29,12 @@ namespace k8sdemo.Controllers
             return View();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
