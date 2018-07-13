@@ -16,7 +16,7 @@ namespace k8sdemo.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
-        private IEnumerable<Person> _repository;
+        private List<Person> _repository;
 
         /// <summary>
         /// 
@@ -80,6 +80,7 @@ namespace k8sdemo.Controllers
         [ProducesResponseType(400)]
         public IActionResult Create([FromBody]Person person)
         {
+            _repository.Add(person);
             return CreatedAtAction(nameof(GetById), new { id = person.Id }, person);
         }
 
@@ -103,6 +104,8 @@ namespace k8sdemo.Controllers
             {
                 return NotFound();
             }
+            _repository.Remove(model);
+            _repository.Add(person);
             return new NoContentResult();
         }
 
@@ -116,6 +119,11 @@ namespace k8sdemo.Controllers
         [ProducesResponseType(204)]
         public IActionResult Delete(string id)
         {
+            var model = _repository.Where(x => x.Id == id).FirstOrDefault();
+            if (model != null)
+            {
+                _repository.Remove(model);
+            }
             return new NoContentResult();
         }
 
