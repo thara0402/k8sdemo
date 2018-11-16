@@ -1,23 +1,23 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "k8sdemo.fullname" . }}
+  name: {{ include "k8sdemo.fullname" . }}
   labels:
-    app: {{ template "k8sdemo.name" . }}
-    chart: {{ template "k8sdemo.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ include "k8sdemo.name" . }}
+    helm.sh/chart: {{ include "k8sdemo.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "k8sdemo.name" . }}
-      release: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ include "k8sdemo.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "k8sdemo.name" . }}
-        release: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "k8sdemo.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

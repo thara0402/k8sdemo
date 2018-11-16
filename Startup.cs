@@ -81,6 +81,8 @@ namespace k8sdemo
                 app.UseHsts();
             }
 
+            app.UsePathBase("/foo");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
