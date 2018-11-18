@@ -1,3 +1,4 @@
+{{- $ingressPath := .Values.ingress.path -}}
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -23,6 +24,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: PATH_BASE
+            value: {{ $ingressPath }}
           ports:
             - name: http
               containerPort: 80
