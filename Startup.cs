@@ -81,7 +81,11 @@ namespace k8sdemo
                 app.UseHsts();
             }
 
-            app.UsePathBase("/foo");
+            var pathBase = Environment.GetEnvironmentVariable("PATH_BASE");
+            if (!String.IsNullOrEmpty(pathBase))
+            {
+                app.UsePathBase(pathBase);
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
