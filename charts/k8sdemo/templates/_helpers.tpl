@@ -30,3 +30,27 @@ Create chart name and version as used by the chart label.
 {{- define "k8sdemo.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "k8sdemo.labels" -}}
+app.kubernetes.io/name: {{ include "k8sdemo.name" . }}
+helm.sh/chart: {{ include "k8sdemo.chart" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "k8sdemo.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create -}}
+    {{ default (include "k8sdemo.fullname" .) .Values.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
